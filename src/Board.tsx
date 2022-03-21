@@ -11,7 +11,7 @@ type BoardPropsType = {
     resetNumber:() => void
 }
 const Board = (props:BoardPropsType) => {
-    const condition = props.number===props.maxNumber|| props.maxNumber<0?"red":'';
+    const condition = props.maxNumber<props.minNumber || props.minNumber===props.maxNumber|| props.maxNumber<0?"red":'';
     return (
         <div className='board'>
          <div className={`numberBoard ${condition}`}>{props.number}</div>
