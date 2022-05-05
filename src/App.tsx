@@ -1,46 +1,61 @@
-import React , {useState} from 'react';
+import React , {useEffect , useState} from 'react';
 import './App.css';
 import Board from "./Board";
 import SettingBoard from "./SettingBoard";
+import {useDispatch , useSelector} from "react-redux";
+import {AppDispatch , AppStateType} from "./BLL/store";
+import {
+    changeNumberAC , getMaxNumberAC , getMinNumberAC , getValueCounterFromLS , resetNumberAC , useAppDispatch
+} from "./BLL/counterReducer";
 
 
 function App() {
-    let localMin = localStorage.getItem('min')
-    let localMax = localStorage.getItem('max')
-    let [maxNumber,setMaxNumber] = useState(localMax?Number(localMax):0)
-    let [minNumber,setMinNumber] = useState(localMin?Number(localMin):0)
-    let [myNumber, setNumber] = useState(minNumber)
+    const myNumber = useSelector<AppStateType , number>(state => state.counter.myNumber)
+    const minNumber = useSelector<AppStateType , number>(state => state.counter.minNumber)
+    const maxNumber = useSelector<AppStateType , number>(state => state.counter.maxNumber)
+    const dispatch = useAppDispatch()
+
+    useEffect(()=>{
+        dispatch(getValueCounterFromLS())
+    },[])
+
+
+   const setMinNumber = (minNumber:number)=>{
+       dispatch(getMinNumberAC(minNumber))
+   }
+   const setMaxNumber = (maxNumber:number) => {
+       dispatch(getMaxNumberAC(maxNumber))
+   }
     const changeNumber = () => {
-         // do setNumber(++myNumber)
-         // while (myNumber<5)
-        if(myNumber<maxNumber){
-            setNumber(++myNumber)
+        if (myNumber < maxNumber) {
+            dispatch(changeNumberAC())
         }
     }
     const resetNumber = () => {
-      setNumber(minNumber)
+        dispatch(resetNumberAC(minNumber))
+        dispatch(getMinNumberAC(minNumber))
     }
     const showMinNumber = (number:number) => {
-      setNumber(number)
+        dispatch(getMinNumberAC(number))
     }
 
-  return (
-    <div className="App">
-      <Board number={myNumber}
-             maxNumber={maxNumber}
-             minNumber = {minNumber}
-             changeNumber={changeNumber}
-             resetNumber = {resetNumber}/>
-        <SettingBoard
-            minNumber = {minNumber}
-            maxNumber={maxNumber}
-            showMinNumber = {showMinNumber}
-            setMinNumber = {setMinNumber}
-            setMaxNumber = {setMaxNumber}
-        />
+    return (
+        <div className="App">
+            <Board number={myNumber}
+                   maxNumber={maxNumber}
+                   minNumber={minNumber}
+                   changeNumber={changeNumber}
+                   resetNumber={resetNumber}/>
+            <SettingBoard
+                minNumber={minNumber}
+                maxNumber={maxNumber}
+                showMinNumber={showMinNumber}
+                setMinNumber={setMinNumber}
+                setMaxNumber={setMaxNumber}
+            />
 
-    </div>
-  );
+        </div>
+    );
 }
 
 export default App;

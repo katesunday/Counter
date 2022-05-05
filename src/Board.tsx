@@ -2,6 +2,7 @@ import React from 'react';
 import IncBtn from "./IncBtn";
 import ResetBtn from "./ResetBtn";
 import {MyButton} from "./MyButton";
+import {useDispatch} from "react-redux";
 
 type BoardPropsType = {
     number:number
@@ -16,12 +17,6 @@ const Board = (props:BoardPropsType) => {
         <div className='board'>
          <div className={`numberBoard ${condition}`}>{props.number}</div>
             <div className='buttons'>
-                {/*<IncBtn number = {props.number}*/}
-                {/*        changeNumber={props.changeNumber}*/}
-                {/*        />*/}
-                {/*<ResetBtn*/}
-                {/*    number = {props.number}*/}
-                {/*    resetNumber = {props.resetNumber}/>*/}
                 <MyButton
                     onClick = {props.changeNumber}
                     disabled = {props.number===props.maxNumber}

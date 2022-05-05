@@ -1,27 +1,30 @@
 import React , {ChangeEvent} from 'react';
 import {MyButton} from "./MyButton";
+import {useDispatch} from "react-redux";
+import {setNumberFromLSTC , useAppDispatch} from "./BLL/counterReducer";
 
 type SettingBoardPropsType = {
-    minNumber:number
-    maxNumber:number
-    showMinNumber: (number:number) =>void
-    setMinNumber:(minNumber:number)=>void
-    setMaxNumber:(maxNumber:number)=>void
+    minNumber: number
+    maxNumber: number
+    showMinNumber: (number: number) => void
+    setMinNumber: (minNumber: number) => void
+    setMaxNumber: (maxNumber: number) => void
+
 }
-const SettingBoard = (props:SettingBoardPropsType) => {
-const chooseMinNumber = (e:ChangeEvent<HTMLInputElement>) => {
-    props.setMinNumber(Number(e.currentTarget.value))
-}
-const chooseMaxNumber = (e:ChangeEvent<HTMLInputElement>) => {
+const SettingBoard = (props: SettingBoardPropsType) => {
+    const dispatch = useAppDispatch()
+    const chooseMinNumber = (e: ChangeEvent<HTMLInputElement>) => {
+        props.setMinNumber(Number(e.currentTarget.value))
+    }
+    const chooseMaxNumber = (e: ChangeEvent<HTMLInputElement>) => {
         props.setMaxNumber(Number(e.currentTarget.value))
     }
-const changeNumberHandler = () => {
-  props.showMinNumber(props.minNumber)
-    localStorage.setItem('min',JSON.stringify(props.minNumber))
-    localStorage.setItem('max',JSON.stringify(props.maxNumber))
-}
-const p_setCondition = props.minNumber<0||props.maxNumber<0?"belowZero":'warning';
-const setBtnCondition = props.minNumber<0||props.maxNumber<0||props.minNumber===props.maxNumber||props.maxNumber<props.minNumber
+    const changeNumberHandler = () => {
+        props.showMinNumber(props.minNumber)
+        dispatch(setNumberFromLSTC())
+    }
+    const p_setCondition = props.minNumber < 0 || props.maxNumber < 0 ? "belowZero" : 'warning';
+    const setBtnCondition = props.minNumber < 0 || props.maxNumber < 0 || props.minNumber === props.maxNumber || props.maxNumber < props.minNumber
     return (
         <div className='board'>
 
@@ -30,9 +33,9 @@ const setBtnCondition = props.minNumber<0||props.maxNumber<0||props.minNumber===
 
             <input type="number" id="setMin" onChange={chooseMinNumber} value={props.minNumber}/>
             <p className='desc-p'>set Min value for counter</p>
-             <MyButton className='setBtn' onClick={changeNumberHandler}
-                       disabled={setBtnCondition}>
-                 Set</MyButton>
+            <MyButton className='setBtn' onClick={changeNumberHandler}
+                      disabled={setBtnCondition}>
+                Set</MyButton>
             <p className={p_setCondition}> number can't be less than zero</p>
         </div>
     );
