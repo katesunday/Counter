@@ -19,39 +19,15 @@ function App() {
         dispatch(getValueCounterFromLS())
     },[])
 
-
-   const setMinNumber = (minNumber:number)=>{
-       dispatch(getMinNumberAC(minNumber))
-   }
-   const setMaxNumber = (maxNumber:number) => {
-       dispatch(getMaxNumberAC(maxNumber))
-   }
-    const changeNumber = () => {
-        if (myNumber < maxNumber) {
-            dispatch(changeNumberAC())
-        }
-    }
-    const resetNumber = () => {
-        dispatch(resetNumberAC(minNumber))
-        dispatch(getMinNumberAC(minNumber))
-    }
-    const showMinNumber = (number:number) => {
-        dispatch(getMinNumberAC(number))
-    }
-
     return (
         <div className="App">
             <Board number={myNumber}
                    maxNumber={maxNumber}
                    minNumber={minNumber}
-                   changeNumber={changeNumber}
-                   resetNumber={resetNumber}/>
+            />
             <SettingBoard
                 minNumber={minNumber}
                 maxNumber={maxNumber}
-                showMinNumber={showMinNumber}
-                setMinNumber={setMinNumber}
-                setMaxNumber={setMaxNumber}
             />
 
         </div>

@@ -1,26 +1,33 @@
 import React , {ChangeEvent} from 'react';
 import {MyButton} from "./MyButton";
 import {useDispatch} from "react-redux";
-import {setNumberFromLSTC , useAppDispatch} from "./BLL/counterReducer";
+import {getMaxNumberAC , getMinNumberAC , setNumberFromLSTC , useAppDispatch} from "./BLL/counterReducer";
 
 type SettingBoardPropsType = {
     minNumber: number
     maxNumber: number
-    showMinNumber: (number: number) => void
-    setMinNumber: (minNumber: number) => void
-    setMaxNumber: (maxNumber: number) => void
 
 }
 const SettingBoard = (props: SettingBoardPropsType) => {
     const dispatch = useAppDispatch()
+    // const setMinNumber = (minNumber:number)=>{
+    //     dispatch(getMinNumberAC(minNumber))
+    // }
+    // const setMaxNumber = (maxNumber:number) => {
+    //     dispatch(getMaxNumberAC(maxNumber))
+    // }
+
+    // const showMinNumber = (number:number) => {
+    //     dispatch(getMinNumberAC(number))
+    // }
     const chooseMinNumber = (e: ChangeEvent<HTMLInputElement>) => {
-        props.setMinNumber(Number(e.currentTarget.value))
+        dispatch(getMinNumberAC((Number(e.currentTarget.value))))
     }
     const chooseMaxNumber = (e: ChangeEvent<HTMLInputElement>) => {
-        props.setMaxNumber(Number(e.currentTarget.value))
+        dispatch(getMaxNumberAC((Number(e.currentTarget.value))))
     }
     const changeNumberHandler = () => {
-        props.showMinNumber(props.minNumber)
+        dispatch(getMinNumberAC((props.minNumber)))
         dispatch(setNumberFromLSTC())
     }
     const p_setCondition = props.minNumber < 0 || props.maxNumber < 0 ? "belowZero" : 'warning';
